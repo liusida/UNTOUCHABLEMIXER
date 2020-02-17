@@ -7,7 +7,7 @@ import sqlite3
 conn = sqlite3.connect('jarvis.db')
 print("Opened database successfully")
 
-conn.execute('''CREATE TABLE training_data
+conn.execute('''CREATE TABLE IF NOT EXISTS training_data
              (action TEXT PRIMARY KEY NOT NULL,
              txt TEXT NOT NULL);''')
 print("Table created successfully")
