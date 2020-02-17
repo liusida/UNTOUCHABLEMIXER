@@ -91,6 +91,8 @@ def on_error(ws, error):
 
 
 def on_close(ws):
+    if db_connection is not None:
+        db_connection.close()
     print("### closed ###")
 
 def start():
