@@ -21,7 +21,7 @@ db_file = "jarvis.db"
 
 def start_rtm():
     URL = "https://slack.com/api/rtm.connect?token={}".format(
-        botsettings.bot_sida)  # try change this to bot_sarah
+        botsettings.API_TOKEN)  # try change this to bot_sarah
     connection = urllib.request.urlopen(URL)
     text = connection.read().decode("utf-8")
     data = json.loads(text)
