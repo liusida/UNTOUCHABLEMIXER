@@ -1,0 +1,23 @@
+#
+# I copied some data from the external dataset.
+# How should we prepare the training data?
+#
+tell me a good one liner,JOKE
+weather check,WEATHER
+is it raining?,WEATHER
+hey,GREET
+current weather please jarvis,WEATHER
+throw me a joke,JOKE
+Tell me a joke about a good time you had,JOKE
+Jarvis what is the time?,TIME
+eyy what's up chief,GREET
+is it cold outside Jarvis,WEATHER
+"Get me some pizza, right now Jarvis!",PIZZA
+Jarvis what time is it?,TIME
+can you check the humidity for me Jarvis?,WEATHER
+Jarvis please print the system time,TIME
+Jarvis order me a large cheese,PIZZA
+tell me a joke,JOKE
+what is the temperature,WEATHER
+what is the present time?,TIME
+give me a good knee slapper,JOKE
