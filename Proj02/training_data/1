@@ -2,6 +2,7 @@
 # I copied some data from the external dataset.
 # How should we prepare the training data?
 #
+
 tell me a good one liner,JOKE
 weather check,WEATHER
 is it raining?,WEATHER
@@ -21,3 +22,5 @@ tell me a joke,JOKE
 what is the temperature,WEATHER
 what is the present time?,TIME
 give me a good knee slapper,JOKE
+hi, this is me,GREET
+hello,GREET
