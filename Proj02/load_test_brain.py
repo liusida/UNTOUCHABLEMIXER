@@ -9,5 +9,5 @@ brain_filename = "jarvis_UNTOUCHABLEMIXER.pkl"
 
 import pickle
 brain = pickle.load(open(brain_filename, 'rb'))
-result = brain.predict(["Hello funny roboooot!", "HELLO"])
+result = brain.predict(["Hello funny roboooot!", "TEMPERATURE"])
 print(result)

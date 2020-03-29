@@ -6,8 +6,9 @@
 #
 # This filename is specified in Sec 5.1 Proj 02
 brain_filename = "jarvis_UNTOUCHABLEMIXER.pkl"
+# This folder name contains all the data files that will feed into the JarvisBrain
 training_folder = "training_data"
-# This orde is specified in Sec 7.2 Proj 01
+# These labels are specified in Sec 7.2 Proj 01
 targets = ["TIME", "PIZZA", "GREET", "WEATHER", "JOKE"]
 #========================================================================
 
@@ -54,9 +55,11 @@ for filename in training_filenames:
         except:
             utils.error(f"Processing line: {line}.")
 
-print(data_x)
-print("===")
-print(data_y)
+# Visually check the data
+if False:
+    print(data_x[:10])
+    print("===")
+    print(data_y[:10])
 
 # Train
 JarvisBrain.fit(data_x, data_y)
