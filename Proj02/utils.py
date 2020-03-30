@@ -10,6 +10,9 @@ brain_filename = "jarvis_UNTOUCHABLEMIXER.pkl"
 training_folders = ["training_data", "training_data/external-data"]
 # These labels are specified in Sec 7.2 Proj 01
 targets = ["TIME", "PIZZA", "GREET", "WEATHER", "JOKE"]
+
+#Jarvis database created in Proj 01
+db_file = "jarvis.db"
 #========================================================================
 
 #========================================================================
@@ -75,4 +78,27 @@ def preprocess_data():
     for i in data_y:
         if not i in target_set:
             error(f"Invalid target value: {i}.")
+    return data_x, data_y
+
+
+#Function to read in database from Project 1
+def project1_data():
+    ''' 
+    Function to read in database created in Project 1 when first creating Jarvis.
+    The databast should be specified using db_file. 
+    Outputs two lists:
+    data_x: all string commands included in database
+    data_y: corresponding action targets for Jarvis
+    '''
+    
+    #data phrases
+    data_x = []
+    #Data targets/actions
+    data_y = []
+    db_conn = sqlite3.connect(db_file)
+    c = db_conn.cursor()
+    
+    for line in c.execute('SELECT * FROM training_data'):
+        data_x.append(line[0].strip())
+        data_y.append(line[1].strip())
     return data_x, data_y
