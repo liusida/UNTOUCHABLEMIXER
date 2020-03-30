@@ -1,59 +1,88 @@
-# Running this file will generate a Jarvis brain pickle file
-# At the end of competition 1, we will submit the generated pickle file.
+# This file evaluates several models and hyper-parameters in sklearn
+import pickle
 
-# =======================================================================
-# Important Constant
-#
-# This filename is specified in Sec 5.1 Proj 02
-brain_filename = "jarvis_UNTOUCHABLEMIXER.pkl"
-# This folder name contains all the data files that will feed into the JarvisBrain
-training_folder = "training_data"
-# These labels are specified in Sec 7.2 Proj 01
-targets = ["TIME", "PIZZA", "GREET", "WEATHER", "JOKE"]
-#========================================================================
-
-import pickle, glob
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
-from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
+from sklearn.model_selection import train_test_split
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import ParameterGrid
+from sklearn.ensemble import VotingClassifier # Voting will help us win the competition! We can combine the top models together!
+
+# Models we will use: (TODO: Read the documentation and come up with better Classifiers and Parameters)
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.neural_network import MLPClassifier
+from sklearn.naive_bayes import BernoulliNB
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.tree import ExtraTreeClassifier
+from sklearn.ensemble import ExtraTreesClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import LinearSVC
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import NearestCentroid
+from sklearn.neighbors import RadiusNeighborsClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import RidgeClassifier
+from sklearn.svm import NuSVC
+from sklearn.gaussian_process import GaussianProcessClassifier
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.linear_model import SGDClassifier
+from sklearn.ensemble import AdaBoostClassifier
+# Models end
 
 import utils
 
+# All the models we are going to use
+candidate_models = [
+    AdaBoostClassifier,
+    SGDClassifier,
+    MultinomialNB,
+    BernoulliNB,
+    DecisionTreeClassifier,
+    ExtraTreeClassifier,
+    ExtraTreesClassifier,
+    KNeighborsClassifier,
+    LinearSVC,
+    LogisticRegression,
+    NearestCentroid,
+    RandomForestClassifier,
+    RidgeClassifier,
+    NuSVC,
+    GradientBoostingClassifier,
+]
+# The parameters that could pass to model
+candidate_parameters = {
+    "SGDClassifier":            {"max_iter": [10, 100], "tol" : [1e-3], "loss": ["log", "modified_huber"]}, 
+    "ExtraTreesClassifier":     {"n_estimators": [20, 200]},
+    "LinearSVC":                {"max_iter": [200, 2000], "multi_class": ["crammer_singer"]},
+    "LogisticRegression":       {"solver": ["lbfgs"], "multi_class": ["auto"]},
+    "RandomForestClassifier":   {"n_estimators": [10,30]},
+    "NuSVC":                    {"gamma": ["scale", "auto"]},
+}
 # Build the model
-JarvisBrain = Pipeline([
-    ('vect', CountVectorizer()),
-    ('tfidf', TfidfTransformer()),
-    ('clf', MultinomialNB()),
-])
+brains = []
+for this_model in candidate_models:
+    if this_model.__name__ in candidate_parameters:
+        parameter_grid = candidate_parameters[this_model.__name__]
+        parameters = list(ParameterGrid(parameter_grid)) # make grid for parameter-pairs
+        for i, parameter in enumerate(parameters):
+            brain = Pipeline([
+                ("vect", CountVectorizer()),
+                ("tfidf", TfidfTransformer()),
+                ("clf", this_model(**parameter)),
+            ])
+            brains.append( (f"{this_model.__name__}-{i}", brain) )
+    else:
+        brain = Pipeline([
+            ("vect", CountVectorizer()),
+            ("tfidf", TfidfTransformer()),
+            ("clf", this_model()),
+        ])
+        brains.append( (f"{this_model.__name__}", brain) )
 
 # Preprocess training data
-data_x = targets.copy()
-data_y = targets.copy()
-training_filenames = glob.glob(training_folder+"/*")
-for filename in training_filenames:
-    with open(filename, "r") as f:
-        lines = f.readlines()
-    for line in lines:
-        if line[0]=="#":
-            # it is a comment line
-            continue
-        if len(line.strip()) == 0:
-            # it is an empty line
-            continue
-        try:
-            strings = line.split(",")
-            if len(strings)==2:
-                data_x.append(strings[0].strip())
-                data_y.append(strings[1].strip())
-            elif len(strings)>2:
-                sentence = ",".join(strings[:-1])
-                data_x.append(sentence.strip())
-                data_y.append(strings[-1].strip())
-            else:
-                utils.error(f"Format error in line: {line}.")
-        except:
-            utils.error(f"Processing line: {line}.")
+data_x, data_y = utils.preprocess_data()
 
 # Visually check the data
 if False:
@@ -61,9 +90,12 @@ if False:
     print("===")
     print(data_y[:10])
 
-# Train
-JarvisBrain.fit(data_x, data_y)
+# Train JarvisBigBrain
+print("Training start.")
+# Combine those models together (TODO: maybe we should just combine TOP 3? )
+JarvisBigBrain = VotingClassifier( estimators=brains, voting="hard" )
+JarvisBigBrain.fit(data_x, data_y)
 
 # Save as a pickle file
-with open(brain_filename, "wb") as f:
-    pickle.dump(JarvisBrain, f)
+with open(utils.brain_filename, "wb") as f:
+    pickle.dump(JarvisBigBrain, f)
