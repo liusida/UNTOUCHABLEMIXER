@@ -90,7 +90,7 @@ def project1_data():
     data_x: all string commands included in database
     data_y: corresponding action targets for Jarvis
     '''
-    
+    import sqlite3
     #data phrases
     data_x = []
     #Data targets/actions
