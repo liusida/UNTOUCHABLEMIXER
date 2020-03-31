@@ -1,78 +1,67 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
-{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
-{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
-{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
-{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid1\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
-{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
-\margl1440\margr1440\vieww14160\viewh18000\viewkind0
-\deftab720
-\pard\tx220\tx720\pardeftab720\li720\fi-720\sl400\partightenfactor0
-\ls1\ilvl0
-\f0\fs29\fsmilli14667 \cf2 What is the current time, TIME\
-Can you tell the time, TIME\
-Have you got the time on you, TIME\
-Excuse be, can I get the time, TIME\
-What time have you got, TIME\
-What time is it right now, TIME\
-How long has it been, TIME\
-What time of day is it, TIME\
-How long \'92til tomorrow, TIME\
-Is it time, TIME\
-Is it already that time, TIME\
-Is it then already, TIME\
-Has the time come, TIME\
-Can I have a slice of pizza, PIZZA\
-Where is the nearest pizzeria, PIZZA\
-Lets have a pizza party, PIZZA\
-How many pies should we get, PIZZA\
-What is your favorite pizzeria, PIZZA\
-What toppings do you want on your pizza, PIZZA\
-Do you like thin crust pizza, PIZZA\
-Do you like new york style pizza, PIZZA\
-I\'92m hungry for Italian food, PIZZA\
-My stomach is grumbling for some za, PIZZA\
-I need some Chicago style goodness, PIZZA\
-I need some grub extra cheese double dough, PIZZA\
-I need a greasily slice of goodness, PIZZA\
-Its a pleasure to meet you, GREET\
-How are things, GREET\
-Whats new, GREET\
-Its good to see you, GREET\
-Whats happenin, GREET\
-G\'92day, GREET\
-Hey man, GREET\
-Long time no see, GREET\
-Its been a while, GREET\
-I hope you\'92re doing well, GREET\
-Its me again, GREET\
-Hey hows the family doing, GREET\
-Good evening, GREET\
-Good morning, GREET\
-Whazzap, GREET\
-Whats the weather forecast like, WEATHER\
-Whats the weather expected to be like tomorrow, WEATHER\
-Hows the weather, WEATHER\
-Awful weather isn\'92t it, WEATHER\
-How has the weather in your country been recently, WEATHER\
-Will it rain tomorrow, WEATHER\
-Is it hot today, WEATHER\
-Is it cold outside, WEATHER\
-Is it going to be a humid day, WEATHER\
-Did it snow earlier, WEATHER\
-Beautiful day isn\'92t it, WEATHER\
-Is there a breeze today, WEATHER\
-It feels great outside today, WEATHER\
-Are you worried about the tempest outside, WEATHER\
-Windy isn\'92t it, WEATHER\
-Know any puns, JOKE\
-Know any good one-liners, JOKE\
-Josh with me, JOKE\
-Do you have inside jokes, JOKE\
-Can you tell me a joke, JOKE\
-What is something funny you heard recently, JOKE\
-Say something silly, JOKE\
-You\'92re funny, JOKE\
-I\'92m sad fix this, JOKE\
-I like to laugh, JOKE\
-I feel too serious, JOKE\
-}
+What is the current time, TIME
+Can you tell the time, TIME
+Have you got the time on you, TIME
+Excuse be, can I get the time, TIME
+What time have you got, TIME
+What time is it right now, TIME
+How long has it been, TIME
+What time of day is it, TIME
+How long ’til tomorrow, TIME
+Is it time, TIME
+Is it already that time, TIME
+Is it then already, TIME
+Has the time come, TIME
+Can I have a slice of pizza, PIZZA
+Where is the nearest pizzeria, PIZZA
+Lets have a pizza party, PIZZA
+How many pies should we get, PIZZA
+What is your favorite pizzeria, PIZZA
+What toppings do you want on your pizza, PIZZA
+Do you like thin crust pizza, PIZZA
+Do you like new york style pizza, PIZZA
+I’m hungry for Italian food, PIZZA
+My stomach is grumbling for some za, PIZZA
+I need some Chicago style goodness, PIZZA
+I need some grub extra cheese double dough, PIZZA
+I need a greasily slice of goodness, PIZZA
+Its a pleasure to meet you, GREET
+How are things, GREET
+Whats new, GREET
+Its good to see you, GREET
+Whats happenin, GREET
+G’day, GREET
+Hey man, GREET
+Long time no see, GREET
+Its been a while, GREET
+I hope you’re doing well, GREET
+Its me again, GREET
+Hey hows the family doing, GREET
+Good evening, GREET
+Good morning, GREET
+Whazzap, GREET
+Whats the weather forecast like, WEATHER
+Whats the weather expected to be like tomorrow, WEATHER
+Hows the weather, WEATHER
+Awful weather isn’t it, WEATHER
+How has the weather in your country been recently, WEATHER
+Will it rain tomorrow, WEATHER
+Is it hot today, WEATHER
+Is it cold outside, WEATHER
+Is it going to be a humid day, WEATHER
+Did it snow earlier, WEATHER
+Beautiful day isn’t it, WEATHER
+Is there a breeze today, WEATHER
+It feels great outside today, WEATHER
+Are you worried about the tempest outside, WEATHER
+Windy isn’t it, WEATHER
+Know any puns, JOKE
+Know any good one-liners, JOKE
+Josh with me, JOKE
+Do you have inside jokes, JOKE
+Can you tell me a joke, JOKE
+What is something funny you heard recently, JOKE
+Say something silly, JOKE
+You’re funny, JOKE
+I’m sad fix this, JOKE
+I like to laugh, JOKE
+I feel too serious, JOKE
