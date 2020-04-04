@@ -1,7 +1,7 @@
 What is the current time, TIME
 Can you tell the time, TIME
 Have you got the time on you, TIME
-Excuse be, can I get the time, TIME
+Excuse me can I get the time, TIME
 What time have you got, TIME
 What time is it right now, TIME
 How long has it been, TIME
