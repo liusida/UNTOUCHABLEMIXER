@@ -1,3 +1,15 @@
+"""
+jarvis.py, Project 02 
+
+Author: Kieran Edraney, Sida Liu, Sarah Smith, and Katherine Wilkinson <the Untouchable Mixer>
+2020-04-05
+
+Files required to run:
+    botsettings.py
+    jarvis.db
+
+"""
+
 # need do `pip install websocket-client`
 import websocket
 
@@ -5,11 +17,12 @@ try:
     import thread
 except ImportError:
     import _thread as thread
-import time
-import urllib
-import urllib.request
-import json
-import sqlite3
+import time, urllib, json, sqlite3, os
+
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import RidgeClassifier
 
 import botsettings
 
@@ -19,6 +32,23 @@ is_testing = 0
 training_action_name = ""
 db_connection = None
 db_file = "jarvis.db"
+JarvisBrain = None
+
+def init():
+    """ check all requirements """
+    global db_connection
+    if not os.path.exists(db_file):
+        print(f"Database file {db_file} not found.")
+        return
+    try:
+        db_connection = sqlite3.connect(db_file)
+    except:
+        print(f"Failed to open database file {db_file}.")
+        return
+    if 'enableTrace' not in dir(websocket):
+        print(f"Wrong websocket package found. The websocket-client package should be installed by command:\npip install websocket-client")
+        return
+
 
 def start_rtm():
     URL = "https://slack.com/api/rtm.connect?token={}".format(
@@ -38,14 +68,36 @@ def send_msg(ws, channel, message):
 
 def save_training_text(action_name, text):
     global db_connection, db_file
-    if db_connection is None:
-        db_connection = sqlite3.connect(db_file)
     c = db_connection.cursor()
     c.execute("INSERT INTO training_data (txt,action) VALUES (?, ?)", (text, action_name,))
     db_connection.commit() # save (commit) the changes
 
+def read_all_training_text():
+    """ read all training text in database and return a list """
+    global db_connection, db_file
+    c = db_connection.cursor()
+    c.execute("SELECT * from training_data")
+    rows = c.fetchall()
+    data_x = []
+    data_y = []
+    for row in rows:
+        data_x.append(row[0])
+        data_y.append(row[1])
+    return data_x, data_y
+
+def build_a_brain():
+    brain = Pipeline([
+            ("vect", CountVectorizer()),
+            ("tfidf", TfidfTransformer()),
+            ("clf", RidgeClassifier()),
+        ])
+    data_x, data_y = read_all_training_text()
+    brain.fit(data_x, data_y)
+    return brain
+
+
 def on_message(ws, message):
-    global is_training, is_testing, training_action_name
+    global is_training, is_testing, training_action_name, JarvisBrain
 
     try:
         msg_data = json.loads(message)
@@ -61,19 +113,37 @@ def on_message(ws, message):
             print("Message: ", msg_data["text"])
             msg_text = msg_data["text"]
             msg_channel = msg_data["channel"]
-            if not is_training and not is_testing and msg_text=="testing time":
-                pass
-            if not is_training and msg_text=="training time":
+
+            if not is_training and not is_testing and msg_text=="training time":
                 is_training = 1
                 training_action_name = ""
                 send_msg(ws, msg_channel, "OK, I'm ready for training. What NAME should this ACTION be?")
                 return
-            
+            if not is_training and not is_testing and msg_text=="testing time":
+                is_testing = 1
+                send_msg(ws, msg_channel, "I'm training my brain with the data you've already given me...")
+                JarvisBrain = build_a_brain()
+                send_msg(ws, msg_channel, "OK, I'm ready for testing. Write me something and I'll try to figure it out.")
+                return
+            if not is_training and not is_testing and msg_text=="show data":
+                data_x, data_y = read_all_training_text()
+                s = "```"
+                for i in range(len(data_x)):
+                    s += f"({i:03}) [{data_y[i]:7}]: {data_x[i]} \n"
+                s += "```"
+                send_msg(ws, msg_channel, s)
+                return
+
             # `done` has higher priority than those below
             if is_training and msg_text=="done":
                 is_training = 0
                 training_action_name = ""
                 send_msg(ws, msg_channel, "OK, I'm finished training")
+                return
+            if is_testing and msg_text=="done":
+                is_testing = 0
+                training_action_name = ""
+                send_msg(ws, msg_channel, "OK, I'm finished testing")
                 return
 
             if is_training and training_action_name=="":
@@ -84,7 +154,16 @@ def on_message(ws, message):
             if is_training and training_action_name!="":
                 save_training_text(training_action_name, msg_text)
                 send_msg(ws, msg_channel, "OK, I've got it! What else?")
-            
+                return
+
+            if is_testing:
+                if JarvisBrain is None:
+                    JarvisBrain = build_a_brain()
+                action = JarvisBrain.predict([msg_text])[0]
+                send_msg(ws,msg_channel, f"OK, I think the action you mean is `{action}`...")
+                send_msg(ws,msg_channel, "Write me something else and I'll try to figure it out.")
+                return
+
         if msg_data["type"] == "hello":
             print("I am online now. Go to Slack and send me a direct message!")
 
@@ -109,4 +188,5 @@ def start():
     ws.run_forever()
 
 if __name__ == "__main__":
+    init()
     start()    
