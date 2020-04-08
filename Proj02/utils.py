@@ -138,7 +138,7 @@ def build_a_simple_brain():
     brain = Pipeline([
             ("vect", CountVectorizer()),
             ("tfidf", TfidfTransformer()),
-            ("clf", RidgeClassifier()),
+            ("clf", RidgeClassifier(alpha=0.5874)),
         ])
     return brain
 

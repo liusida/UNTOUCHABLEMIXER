@@ -64,7 +64,8 @@ def step2():
     # get externel-data from cleaned folder
     proj1_data_x, proj1_data_y = utils.project1_data()
     data_x, data_y = utils.preprocess_data(cleaned_version=True, with_filename=False)
-    total_data = len(data_x)
+    ok_data_x, hold_off_data_x, ok_data_y, hold_off_data_y = train_test_split(data_x, data_y, random_state=10)
+    total_data = len(ok_data_x)
     num_train = int(total_data * 0.8)
     num_test = total_data - num_train
     step_size = int(num_train/30)
@@ -74,7 +75,7 @@ def step2():
     for total_train in range(0,num_train,step_size):
         scores = []
         for iteration_count in range(10):
-            train_x, test_x, train_y, test_y = train_test_split(data_x, data_y, random_state=iteration_count, train_size=num_train, test_size=num_test)
+            train_x, test_x, train_y, test_y = train_test_split(ok_data_x, ok_data_y, random_state=iteration_count, train_size=num_train, test_size=num_test)
 
             x = proj1_data_x + train_x[:total_train]
             y = proj1_data_y + train_y[:total_train]
@@ -118,33 +119,33 @@ def step2():
     plt.savefig("adding_external_data.png")
     plt.show()
 
-# pour all data together and do cross-validation
-def step3():
-    print("Step 3 start. Pour all data together and do cross-validation.")
-    proj1_data_x, proj1_data_y = utils.project1_data()
-    data_x, data_y = utils.preprocess_data(cleaned_version=True, with_filename=False)
-    data_x = data_x + proj1_data_x
-    data_y = data_y + proj1_data_y
-    scores = []
-    for iteration_count in range(20):
-        train_x, test_x, train_y, test_y = train_test_split(data_x, data_y, random_state=iteration_count)
-        # get a brain
-        brain = utils.build_a_simple_brain()
-        # train
-        brain.fit(train_x, train_y)
-        # accuracy
-        score = brain.score(test_x, test_y)
-        scores.append(score)
+# # pour all data together and do cross-validation
+# def step3():
+#     print("Step 3 start. Pour all data together and do cross-validation.")
+#     proj1_data_x, proj1_data_y = utils.project1_data()
+#     data_x, data_y = utils.preprocess_data(cleaned_version=True, with_filename=False)
+#     data_x = data_x + proj1_data_x
+#     data_y = data_y + proj1_data_y
+#     scores = []
+#     for iteration_count in range(20):
+#         train_x, test_x, train_y, test_y = train_test_split(data_x, data_y, random_state=iteration_count)
+#         # get a brain
+#         brain = utils.build_a_simple_brain()
+#         # train
+#         brain.fit(train_x, train_y)
+#         # accuracy
+#         score = brain.score(test_x, test_y)
+#         scores.append(score)
 
-    plt.figure(figsize=(9,6))
-    bplot = plt.boxplot(scores)
-    plt.xlabel("")
-    plt.ylabel("Accuracy Score")
-    plt.grid(color='#EEEEEE')
-    plt.savefig("estimate_real_world_test_score.png")
-    plt.show()
+#     plt.figure(figsize=(9,6))
+#     bplot = plt.boxplot(scores)
+#     plt.xlabel("")
+#     plt.ylabel("Accuracy Score")
+#     plt.grid(color='#EEEEEE')
+#     plt.savefig("estimate_real_world_test_score.png")
+#     plt.show()
 
 if __name__ == "__main__":
     step1()
     step2()
-    step3()
+    # step3()
