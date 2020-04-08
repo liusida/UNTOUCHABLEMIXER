@@ -55,7 +55,7 @@ def cv_plot(cv_results, param1, param2, legend_title = None,
     #plt.show()
     
         
-def final_metrics(brain, label):
+def final_metrics(brain, label, x_train, y_train, x_test, y_test):
     
     start_time = time.time()
     fit = brain.fit(x_train, y_train)
@@ -116,7 +116,8 @@ knn_brain = Pipeline([
                                              weights = best_params['clf__weights'])),
                                      ])
 
-knn_pred, knn = final_metrics(knn_brain, label = 0)
+knn_pred, knn = final_metrics(knn_brain, 0,
+                              x_train, y_train, x_test, y_test)
 
 knn_wrong = list()
 for p in range(len(knn_pred)):
@@ -161,7 +162,8 @@ svc_brain = Pipeline([
                                              multi_class = best_params['clf__multi_class'])),
                                      ])
 
-svc_pred, svc = final_metrics(svc_brain, label = 1)
+svc_pred, svc = final_metrics(svc_brain, 1,
+                              x_train, y_train, x_test, y_test)
 
 svc_wrong = list()
 for p in range(len(svc_pred)):
@@ -217,7 +219,8 @@ mnb_brain = Pipeline([
                                              fit_prior = best_params['clf__fit_prior'])),
                                      ])
 
-mnb_pred, mnb = final_metrics(mnb_brain, label = 2)
+mnb_pred, mnb = final_metrics(mnb_brain, 2,
+                              x_train, y_train, x_test, y_test)
 
 mnb_wrong = list()
 for p in range(len(mnb_pred)):
@@ -276,8 +279,8 @@ rf_brain = Pipeline([
                                              random_state = 10)),
                                      ])
 
-rf_pred, rf = final_metrics(rf_brain, label = 3)
-
+rf_pred, rf = final_metrics(rf_brain, 3,
+                              x_train, y_train, x_test, y_test)
 rf_wrong = list()
 for p in range(len(rf_pred)):
     if rf_pred[p] != y_test[p]:
@@ -326,8 +329,8 @@ rc_brain = Pipeline([
         ("clf", RidgeClassifier(alpha = best_params['clf__alpha'])),
                                      ])
 
-rc_pred, rc = final_metrics(rc_brain, label = 4)
-
+rc_pred, rc = final_metrics(rc_brain, 4,
+                              x_train, y_train, x_test, y_test)
 rc_wrong = list()
 for p in range(len(rc_pred)):
     if rc_pred[p] != y_test[p]:
