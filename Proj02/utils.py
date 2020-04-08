@@ -7,7 +7,7 @@
 # This filename is specified in Sec 5.1 Proj 02
 brain_filename = "jarvis_UNTOUCHABLEMIXER.pkl"
 # This folder name contains all the data files that will feed into the JarvisBrain
-training_folders = ["training_data", "training_data/external-data"]
+training_folders = ["training_data/external-data"]
 cleaned_training_folders = [ "training_data/cleaned-data" ]
 # These labels are specified in Sec 7.2 Proj 01
 targets = ["TIME", "PIZZA", "GREET", "WEATHER", "JOKE"]
@@ -128,3 +128,96 @@ def project1_data():
         data_x.append(line[0].strip())
         data_y.append(line[1].strip())
     return data_x, data_y
+
+
+def build_a_simple_brain():
+    from sklearn.feature_extraction.text import CountVectorizer
+    from sklearn.feature_extraction.text import TfidfTransformer
+    from sklearn.pipeline import Pipeline
+    from sklearn.linear_model import RidgeClassifier
+    brain = Pipeline([
+            ("vect", CountVectorizer()),
+            ("tfidf", TfidfTransformer()),
+            ("clf", RidgeClassifier()),
+        ])
+    return brain
+
+def build_a_complex_brain():
+    from sklearn.feature_extraction.text import CountVectorizer
+    from sklearn.feature_extraction.text import TfidfTransformer
+    from sklearn.pipeline import Pipeline
+    from sklearn.model_selection import train_test_split
+    from sklearn.model_selection import cross_val_score
+    from sklearn.model_selection import GridSearchCV
+    from sklearn.model_selection import ParameterGrid
+    from sklearn.ensemble import VotingClassifier # Voting will help us win the competition! We can combine the top models together!
+
+    # Models we will use: (TODO: Read the documentation and come up with better Classifiers and Parameters)
+    from sklearn.naive_bayes import MultinomialNB
+    from sklearn.neural_network import MLPClassifier
+    from sklearn.naive_bayes import BernoulliNB
+    from sklearn.tree import DecisionTreeClassifier
+    from sklearn.tree import ExtraTreeClassifier
+    from sklearn.ensemble import ExtraTreesClassifier
+    from sklearn.neighbors import KNeighborsClassifier
+    from sklearn.svm import LinearSVC
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.neighbors import NearestCentroid
+    from sklearn.neighbors import RadiusNeighborsClassifier
+    from sklearn.ensemble import RandomForestClassifier
+    from sklearn.linear_model import RidgeClassifier
+    from sklearn.svm import NuSVC
+    from sklearn.gaussian_process import GaussianProcessClassifier
+    from sklearn.ensemble import GradientBoostingClassifier
+    from sklearn.linear_model import SGDClassifier
+    from sklearn.ensemble import AdaBoostClassifier
+    # Models end
+    # All the models we are going to use
+    candidate_models = [
+        AdaBoostClassifier,
+        # SGDClassifier,
+        MultinomialNB,
+        BernoulliNB,
+        DecisionTreeClassifier,
+        ExtraTreeClassifier,
+        ExtraTreesClassifier,
+        KNeighborsClassifier,
+        # LinearSVC,
+        LogisticRegression,
+        NearestCentroid,
+        RandomForestClassifier,
+        RidgeClassifier,
+        # NuSVC,
+        GradientBoostingClassifier,
+    ]
+    # The parameters that could pass to model
+    candidate_parameters = {
+        "SGDClassifier":            {"max_iter": [10, 100], "tol" : [1e-3], "loss": ["log", "modified_huber"]}, 
+        "ExtraTreesClassifier":     {"n_estimators": [20, 200]},
+        "LinearSVC":                {"max_iter": [200, 2000], "multi_class": ["crammer_singer"]},
+        "LogisticRegression":       {"solver": ["lbfgs"], "multi_class": ["auto"]},
+        "RandomForestClassifier":   {"n_estimators": [10,30]},
+        "NuSVC":                    {"gamma": ["scale", "auto"]},
+    }
+    # Build the model
+    brains = []
+    for this_model in candidate_models:
+        if this_model.__name__ in candidate_parameters:
+            parameter_grid = candidate_parameters[this_model.__name__]
+            parameters = list(ParameterGrid(parameter_grid)) # make grid for parameter-pairs
+            for i, parameter in enumerate(parameters):
+                brain = Pipeline([
+                    ("vect", CountVectorizer()),
+                    ("tfidf", TfidfTransformer()),
+                    ("clf", this_model(**parameter)),
+                ])
+                brains.append( (f"{this_model.__name__}-{i}", brain) )
+        else:
+            brain = Pipeline([
+                ("vect", CountVectorizer()),
+                ("tfidf", TfidfTransformer()),
+                ("clf", this_model()),
+            ])
+            brains.append( (f"{this_model.__name__}", brain) )
+    brain = VotingClassifier( estimators=brains, voting="hard" )
+    return brain
