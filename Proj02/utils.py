@@ -129,6 +129,18 @@ def project1_data():
         data_y.append(line[1].strip())
     return data_x, data_y
 
+def new_data(filename = 'testing_data.txt'):
+    f = open(filename, 'r')
+    x_list = []
+    y_list = []
+    lines = f.readlines()
+    for l in lines:
+        l2 = l.split(',')
+        x_list.append(l2[0].strip())
+        y_list.append(l2[1].strip())
+    return x_list, y_list 
+
+
 
 def build_a_simple_brain():
     from sklearn.feature_extraction.text import CountVectorizer
