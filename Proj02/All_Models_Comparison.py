@@ -30,7 +30,7 @@ import utils
 x_train, y_train = utils.project1_data()
 
 #Get testing data
-x_test, y_test = new_data()
+x_test, y_test = utils.new_data()
 
 def cv_func(pipe, tuned_parameters, x_train, y_train ):
     
