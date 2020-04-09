@@ -467,6 +467,9 @@ num_test = total_data - num_train
 x_train_ext, x_test_ext, y_train_ext, y_test_ext = train_test_split(data_x, data_y, random_state=10, 
                  train_size=num_train, test_size=num_test)
 
+#Get breakdown of targets in test data
+test_targets = dict(Counter(y_test_ext))
+
 #also create train datasets that are external + team data
 x_train_ext2 = x_train_ext + x_train
 y_train_ext2 = y_train_ext + y_train
