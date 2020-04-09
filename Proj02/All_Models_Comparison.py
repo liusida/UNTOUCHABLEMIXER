@@ -56,6 +56,20 @@ models = ['KNN', 'LinearSVC', 'MultinomialNB',
 ## Functions ##
 ###############
 
+def check_redundancy(data_large, data_small):
+    '''Function to check for data redundancy.
+    Returns a list of docs that are redundant 
+    and prints the number of redundant docs.
+    data_large: list 1 of data to check
+    data_small: list 2 of data to check, typicaly smaller list 1
+    '''
+    redundant = list()
+    for d in data_small:
+        if d in data_large:
+            redundant.append(d)
+    print(len(redundant))
+    return(redundant)
+
 def cv_func(pipe, tuned_parameters, x_train, y_train ):
     ''' Function to run GridSearchCV and fit brain.
     Outputs a trained brain
@@ -122,6 +136,7 @@ def final_metrics(brain, label, x_train, y_train, x_test, y_test):
     metrics.plot_confusion_matrix(fit, x_test, y_test)
     return(pred, model.reshape(1,4))
     
+check_redundancy(x_train, x_test)
 
     
 ################################
