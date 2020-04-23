@@ -1,9 +1,0 @@
-tell me a good one liner,JOKE
-weather check,WEATHER
-is it raining?,WEATHER
-hey,GREET
-current weather please jarvis,WEATHER
-throw me a joke,JOKE
-Tell me a joke about a good time you had,JOKE
-Jarvis what is the time?,TIME
-eyy what's up chief,GREET
