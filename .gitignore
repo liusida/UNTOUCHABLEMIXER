@@ -4,4 +4,4 @@ tmp.py
 test.py
 tmp
 *.zip
-
+*.pickle
