@@ -38,6 +38,7 @@ def plot_ecdf(datasets, labels, alphas):
     plt.xlabel("PHQ score")
     plt.ylabel("Cumulative Probability")
     plt.legend()
+    plt.savefig("ecdf_"+"_".join(labels)+".png")
     plt.show()
 def _plot_ecdf(data, label='Value', alpha=1):
     """ Add one ECDF to the plot """
@@ -47,16 +48,23 @@ def _plot_ecdf(data, label='Value', alpha=1):
     prob = np.arange(t) / t
     plt.plot(data, prob, label=label, alpha=alpha)
 
+def plot_hist(datasets, bins, labels, alphas):
+    """ Plot several Histogram at once """
+    assert len(labels) == len(datasets)
+    assert len(alphas) == len(datasets)
+    plt.figure(figsize=[9,6])
+    for idx, data in enumerate(datasets):
+        plt.hist(data, bins=bins[idx], density=True, label=labels[idx], alpha=alphas[idx])
+    plt.xlabel("PHQ score")
+    plt.ylabel("Probability")
+    plt.legend()
+    plt.savefig("hist_"+"_".join(labels)+".png")
+    plt.show()
+
 # %%
 print(f"histogram for PHQ score in 2007 and 2017")
-plt.figure(figsize=[9,6])
-plt.hist(df_2007['PHQ score'].astype(int), bins=27, density=True, alpha=1, label="2007")
-plt.hist(df_2017['PHQ score'].astype(int), bins=27, density=True, alpha=0.5, label="2017")
-plt.xlabel("PHQ score")
-plt.ylabel("Probability")
-plt.legend()
-plt.show()
-plot_ecdf([df_2007['PHQ score'].astype(int),df_2017['PHQ score'].astype(int)],  labels=["2007","2017"], alphas=[1,0.9])
+plot_hist([df_2007['PHQ score'].astype(int), df_2017['PHQ score'].astype(int)], bins=[27,27], labels=["2007","2017"], alphas=[1,0.5])
+plot_ecdf([df_2007['PHQ score'].astype(int),df_2017['PHQ score'].astype(int)], labels=["2007","2017"], alphas=[1,0.9])
 print(f"According to the plot, we assume a Negative Binomial distribution.")
 
 # %%
@@ -64,12 +72,15 @@ print(f"Here is one example of Negative Binomial distribution.")
 with pm.Model() as model:
     score_rv = pm.NegativeBinomial('score_rv', mu=3, alpha=0.9)
     x = score_rv.random(size=4000)
-_=plt.hist(x,bins=27,density=True,label="NegativeBinomial\nmu=3, alpha=0.9")
-plt.xlabel("PHQ score")
-plt.ylabel("Probability")
-plt.legend()
-plt.show()
+plot_hist([x], [27], ["NegativeBinomial\nmu=3, alpha=0.9"], [1])
 plot_ecdf([x], ["Random NegativeBinomial\nmu=3, alpha=0.9"], [1])
+
+#%%
+print(f"Here is one example of Negative Binomial distribution.")
+with pm.Model() as model:
+    score_rv = pm.Binomial('score_rv', n=27, p=0.06)
+    x = score_rv.random(size=4000)
+plot_hist([x], [27], [""], [1])
 
 # %%
 def mcmcNegativeBinomial(data):
@@ -103,6 +114,7 @@ def visualize_trace(trace, data, desc='2007'):
         score_rv = pm.NegativeBinomial('score_rv', mu=mu_mean, alpha=alpha_mean)
         x = score_rv.random(size=4000)
     plot_ecdf([x,data], labels=[f"Random Data (mu={mu_mean:.3f}, alpha={alpha_mean:.3f})", desc], alphas=[1,0.9])
+    plot_hist([x,data], bins=[27,27], labels=[f"Random Data (mu={mu_mean:.3f}, alpha={alpha_mean:.3f})", desc], alphas=[1,0.5])
     return alpha_mean,mu_mean
 # %%
 print(f"Bayesian Inference: MCMC method on 2007 data")
@@ -137,3 +149,8 @@ param['2017_34'] = run_analysis(df_2017, year='2017', variable_name='SLQ120', gr
 param['2017_012'] = run_analysis(df_2017, year='2017', variable_name='SLQ120', groups=[0,1,2], group_desc="Never, Rare, or Sometimes")
 
 #%%
+param
+
+# %%
+
+# %%
