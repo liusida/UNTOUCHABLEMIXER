@@ -108,16 +108,18 @@ def visualize_binomial(trace, data, desc = '2007'):
     
     
 def visualize_compare(trace_list = None, desc_list = ['2007','2017'], 
-                      params = 'theta'):
+                      params = 'theta', grouping = [1, 1]):
     #params1 = trace1.get_values(params)
     #params2 = trace2.get_values(params)
-    
+    ls = ['-',':','-.', '--']
     for i in range(len(trace_list)):
         p = trace_list[i].get_values(params)
-        sns.kdeplot(p, label = desc_list[i])
+        g = grouping[i] -1
+        fig = sns.kdeplot(p, label = desc_list[i], linestyle = ls[g])
     #sns.kdeplot(params2, label = desc2)
     plt.legend()
-    #plt.show()
+    plt.xlabel(r'Proportion with Major Depression ($\theta$)')
+    return(fig)
 
 # %%
 print(f"Bayesian Inference: MCMC method on 2007 data")
@@ -131,7 +133,7 @@ data = df_2017['Major depression'].astype(int)
 trace2 = mcmcBinomial(data)
 visualize_binomial(trace2,data,'2017')
 
-visualize_compare(trace_list = [trace1, trace2])
+year_plot = visualize_compare(trace_list = [trace1, trace2])
 
 # %%
 print(f"Now what about condition on SLQ120: How often feel overly sleepy during day?")
@@ -158,13 +160,13 @@ param['2017_34'] = run_analysis(df_2017, year='2017', variable_name='SLQ120',
 param['2017_012'] = run_analysis(df_2017, year='2017', variable_name='SLQ120', 
      groups=[0,1,2], group_desc="Never, Rare, or Sometimes")
 
-visualize_compare(trace_list = [param['2007_34'][0],
+sleep_plot = visualize_compare(trace_list = [param['2007_34'][0],
                                 param['2007_012'][0],
                                 param['2017_34'][0],
                                 param['2017_012'][0]], desc_list = ['2007 Often Sleepy',
                                      '2007 Rarely Sleepy',
                                      '2017 Often Sleepy',
-                                     '2017 Rarely Sleepy'])
+                                     '2017 Rarely Sleepy'], grouping = [1,2,1,2])
 plt.title('KDE of Proportion with Major Depression for SLQ120: \n How often do you feel overly sleepy during the day?')
 
 
@@ -177,13 +179,13 @@ param['2017_male'] = run_analysis(df_2017, year='2017', variable_name='RIAGENDR'
 param['2017_female'] = run_analysis(df_2017, year='2017', variable_name='RIAGENDR', 
      groups=[2], group_desc="Female")
 
-visualize_compare(trace_list = [param['2007_male'][0],
+gender_plot = visualize_compare(trace_list = [param['2007_male'][0],
                                 param['2007_female'][0],
                                 param['2017_male'][0],
                                 param['2017_female'][0]], desc_list = ['2007 Male',
                                      '2007 Female',
                                      '2017 Male',
-                                     '2017 Female'])
+                                     '2017 Female'], grouping = [1,2,1,2])
     
 param['2007_age1'] = run_analysis(df_2007, year='2007', variable_name='age_group', 
      groups=[1], group_desc="18-39")
@@ -199,7 +201,7 @@ param['2017_age3'] = run_analysis(df_2017, year='2017', variable_name='age_group
      groups=[3], group_desc="60+")
 
 
-visualize_compare(trace_list = [param['2007_age1'][0],
+age_plot = visualize_compare(trace_list = [param['2007_age1'][0],
                                 param['2007_age2'][0],
                                 param['2007_age3'][0],
                                 param['2017_age1'][0],
@@ -209,8 +211,29 @@ visualize_compare(trace_list = [param['2007_age1'][0],
                                      '2007 Ages 60+',
                                      '2017 Ages 18 - 39',
                                      '2017 Ages 40 - 59',
-                                     '2017 60+'])
+                                     '2017 60+'], grouping = [1,2,3,1,2,3])
     
+    
+param['2007_smoke'] = run_analysis(df_2007, year = '2007', variable_name = 'SMQ040',
+     groups = [1,2], group_desc = 'Everyday or Sometimes')
+param['2007_nosmoke'] = run_analysis(df_2007, year = '2007', variable_name = 'SMQ040',
+     groups = [3], group_desc = 'Never')
+param['2017_smoke'] = run_analysis(df_2017, year = '2017', variable_name = 'SMQ040',
+     groups = [1,2], group_desc = 'Everyday or Sometimes')
+param['2017_nosmoke'] = run_analysis(df_2017, year = '2017', variable_name = 'SMQ040',
+     groups = [3], group_desc = 'Never')
+
+smoke_plot = visualize_compare(trace_list = [param['2007_smoke'][0],
+                                             param['2007_nosmoke'][0],
+                                             param['2017_smoke'][0],
+                                             param['2017_nosmoke'][0]], desc_list = ['2007 Smoker',
+                                                  '2007 Non-Smoker',
+                                                  '2017 Smoker',
+                                                  '2017 Non-Smoker'], grouping = [1,2,1,2])
+#%%
+    
+
+
 #pm.traceplot(trace, var_names = ['ab','X','Z'])
 #sns.kdeplot(trace['X'], trace['Z'], shade = True, cmap = 'viridis')
 
