@@ -18,7 +18,7 @@ colors = {
     2007: "#E0162B",
     2017: "#0052A5"
 }
-x = np.linspace(0.0,0.17,100)
+x = np.linspace(0.0,0.17,200)
 
 #%%
 # Helper Functions
@@ -51,6 +51,7 @@ def analyze(title, col, groups, group_names, line_styles, x = np.linspace(0.0,0.
 
         for g in groups:
             plt.plot(x, Posterior[year][g], line_styles[g], label=f'{group_names[g]} {year}', c=colors[year])
+            print(f"{year} {group_names[g]} peaks at {x[np.argmax(Posterior[year][g])]}")
     plt.title(title)
     plt.legend()
     plt.xlabel(r"$\theta$")
