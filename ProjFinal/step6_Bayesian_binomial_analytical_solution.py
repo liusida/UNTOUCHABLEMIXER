@@ -36,7 +36,7 @@ def analyze(title, col, groups, group_names, line_styles, x = np.linspace(0.0,0.
     depression = {}
     not_depression = {}
     Posterior = {}
-    plt.figure(figsize=[9,6])
+    plt.figure(figsize=[9,2.5])
     for year in [2007,2017]:
         depression[year], not_depression[year] = get_counts(df[year], col, groups)
 
@@ -222,10 +222,10 @@ for year in [2007,2017]:
         ]
     choices = [1,2,3]
     df[year]['weight_group'] = np.select(conditions, choices, default=0.0)
-col = 'MCQ080'
+col = 'weight_group'
 groups = [1,2]
-group_names = {1:"Normal", 2:"Overweight"}
-line_styles = {1:"-", 2:"-."}
+group_names = {1:"Normal", 2:"Overweight", 3:"Missing"}
+line_styles = {1:"-", 2:"-.", 3:":"}
 # x = np.linspace(0.0,0.085,100)
 
 analyze(title, col, groups, group_names, line_styles, x)
@@ -239,5 +239,16 @@ line_styles = {1:"-", 2:"-."}
 # x = np.linspace(0.0,0.13,100)
 
 analyze(title, col, groups, group_names, line_styles, x)
+
+# %%
+title = 'DUQ200 - Ever used marijuana or hashish'
+col = 'DUQ200'
+groups = [1,2]
+group_names = {1:"Yes", 2:"No"}
+line_styles = {1:"-", 2:"-."}
+# x = np.linspace(0.0,0.13,100)
+
+analyze(title, col, groups, group_names, line_styles, x)
+
 
 # %%
