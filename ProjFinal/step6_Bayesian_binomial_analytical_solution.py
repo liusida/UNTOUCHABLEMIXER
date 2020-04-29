@@ -50,7 +50,7 @@ def analyze(title, col, groups, group_names, line_styles, x = np.linspace(0.0,0.
             Posterior[year][g] = Beta(x, depression[year][g] +1, not_depression[year][g] +1 )
 
         for g in groups:
-            plt.plot(x, Posterior[year][g], line_styles[g], label=f'{group_names[g]}_{year}', c=colors[year])
+            plt.plot(x, Posterior[year][g], line_styles[g], label=f'{group_names[g]} {year}', c=colors[year])
     plt.title(title)
     plt.legend()
     plt.xlabel(r"$\theta$")
@@ -73,6 +73,18 @@ if os.path.exists("cache/df_2017.pickle"):
 else:
     df[2017] = step1_preprocess.load_full_data(2017)
     df[2017].to_pickle("cache/df_2017.pickle")
+
+# %%
+title = 'Overall'
+for year in [2007,2017]:
+    df[year]['Overall'] = 1
+
+col = 'Overall'
+groups = [1]
+group_names = {1:""}
+line_styles = {1:"-"}
+# x = np.linspace(0.01,0.075,100)
+analyze(title, col, groups, group_names, line_styles, x)
 
 # %%
 """
