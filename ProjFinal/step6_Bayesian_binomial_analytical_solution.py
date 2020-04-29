@@ -18,6 +18,8 @@ colors = {
     2007: "#E0162B",
     2017: "#0052A5"
 }
+x = np.linspace(0.0,0.17,100)
+
 #%%
 # Helper Functions
 def get_counts(df, col, groups):
@@ -89,7 +91,7 @@ col = 'RIAGENDR'
 groups = [1,2]
 group_names = {1:"Male", 2:"Female"}
 line_styles = {1:"-", 2:":"}
-x = np.linspace(0.01,0.075,100)
+# x = np.linspace(0.01,0.075,100)
 analyze(title, col, groups, group_names, line_styles, x)
 
 
@@ -116,7 +118,7 @@ col = 'age_group'
 groups = [1,2,3]
 group_names = {1:"18-40", 2:"40-60", 3:">60"}
 line_styles = {1:"-.", 2:"-", 3:":"}
-x = np.linspace(0.01,0.085,100)
+# x = np.linspace(0.01,0.085,100)
 
 analyze(title, col, groups, group_names, line_styles, x)
 
@@ -134,7 +136,7 @@ col = 'sleepy_group'
 groups = [1,2]
 group_names = {1:"Not Sleepy", 2:"Often Sleepy"}
 line_styles = {1:"-.", 2:"-"}
-x = np.linspace(0.0,0.17,100)
+# x = np.linspace(0.0,0.17,100)
 
 analyze(title, col, groups, group_names, line_styles, x)
 
@@ -145,7 +147,7 @@ col = 'SLQ050'
 groups = [1,2]
 group_names = {1:"Yes", 2:"No"}
 line_styles = {1:"-", 2:"-."}
-x = np.linspace(0.0,0.17,100)
+# x = np.linspace(0.0,0.17,100)
 
 analyze(title, col, groups, group_names, line_styles, x)
 
@@ -156,7 +158,7 @@ col = 'SMQ020'
 groups = [1,2]
 group_names = {1:"Yes", 2:"No"}
 line_styles = {1:"-", 2:"-."}
-x = np.linspace(0.0,0.08,100)
+# x = np.linspace(0.0,0.08,100)
 
 analyze(title, col, groups, group_names, line_styles, x)
 
@@ -166,7 +168,7 @@ col = 'PAQ650'
 groups = [1,2]
 group_names = {1:"Yes", 2:"No"}
 line_styles = {1:"-", 2:"-."}
-x = np.linspace(0.0,0.07,100)
+# x = np.linspace(0.0,0.07,100)
 
 analyze(title, col, groups, group_names, line_styles, x)
 
@@ -176,7 +178,7 @@ col = 'PAQ665'
 groups = [1,2]
 group_names = {1:"Yes", 2:"No"}
 line_styles = {1:"-", 2:"-."}
-x = np.linspace(0.0,0.07,100)
+# x = np.linspace(0.0,0.07,100)
 
 analyze(title, col, groups, group_names, line_styles, x)
 
@@ -195,7 +197,7 @@ col = 'income_group'
 groups = [1,2,3]
 group_names = {1:"Low", 2:"High",3:"Missing"}
 line_styles = {1:"-.", 2:"-",3:':'}
-x = np.linspace(0.0,0.09,100)
+# x = np.linspace(0.0,0.09,100)
 
 analyze(title, col, groups, group_names, line_styles, x)
 
@@ -205,7 +207,7 @@ col = 'MCQ080'
 groups = [1,2]
 group_names = {1:"Yes", 2:"No"}
 line_styles = {1:"-", 2:"-."}
-x = np.linspace(0.0,0.085,100)
+# x = np.linspace(0.0,0.085,100)
 
 analyze(title, col, groups, group_names, line_styles, x)
 
@@ -224,7 +226,7 @@ col = 'MCQ080'
 groups = [1,2]
 group_names = {1:"Normal", 2:"Overweight"}
 line_styles = {1:"-", 2:"-."}
-x = np.linspace(0.0,0.085,100)
+# x = np.linspace(0.0,0.085,100)
 
 analyze(title, col, groups, group_names, line_styles, x)
 
@@ -234,7 +236,7 @@ col = 'DUQ240'
 groups = [1,2]
 group_names = {1:"Yes", 2:"No"}
 line_styles = {1:"-", 2:"-."}
-x = np.linspace(0.0,0.13,100)
+# x = np.linspace(0.0,0.13,100)
 
 analyze(title, col, groups, group_names, line_styles, x)
 
