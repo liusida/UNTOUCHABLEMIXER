@@ -246,7 +246,7 @@ for year in [2007,2017]:
     df[year]['weight_group'] = np.select(conditions, choices, default=0.0)
 col = 'weight_group'
 groups = [1,2]
-group_names = {1:"Normal", 2:"Overweight", 3:"Missing"}
+group_names = {1:"Normal", 2:"Obesity", 3:"Missing"}
 line_styles = {1:"-", 2:"-.", 3:":"}
 # x = np.linspace(0.0,0.085,100)
 
