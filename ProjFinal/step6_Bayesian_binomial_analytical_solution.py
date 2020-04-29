@@ -198,17 +198,18 @@ analyze(title, col, groups, group_names, line_styles, x)
 title = 'INDFMPIR - Ratio of family income to poverty'
 for year in [2007,2017]:
     conditions = [
-        (df[year]['INDFMPIR'] >= 0.0) & (df[year]['INDFMPIR'] < 5),
-        (df[year]['INDFMPIR'] >= 5.0) & (df[year]['INDFMPIR'] < 5.1),
+        (df[year]['INDFMPIR'] >= 0.0) & (df[year]['INDFMPIR'] < 1.3),
+        (df[year]['INDFMPIR'] >= 1.3) & (df[year]['INDFMPIR'] < 2.5),
+        (df[year]['INDFMPIR'] >= 2.5) & (df[year]['INDFMPIR'] < 5.1),
         (df[year]['INDFMPIR'].isna()),
         ]
-    choices = [1,2,3]
+    choices = [1,2,3,4]
     df[year]['income_group'] = np.select(conditions, choices, default=0.0)
 
 col = 'income_group'
 groups = [1,2,3]
-group_names = {1:"Low", 2:"High",3:"Missing"}
-line_styles = {1:"-.", 2:"-",3:':'}
+group_names = {1:"Low", 2:"Mid",3:"High",4:"Missing"}
+line_styles = {1:"-.", 2:"--",3:'-',4:":"}
 # x = np.linspace(0.0,0.09,100)
 
 analyze(title, col, groups, group_names, line_styles, x)
