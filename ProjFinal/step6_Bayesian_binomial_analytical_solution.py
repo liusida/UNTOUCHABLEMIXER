@@ -18,7 +18,7 @@ colors = {
     2007: "#E0162B",
     2017: "#0052A5"
 }
-x = np.linspace(0.0,0.17,200)
+x = np.linspace(0.0,0.17,300)
 
 #%%
 # Helper Functions
@@ -167,10 +167,18 @@ analyze(title, col, groups, group_names, line_styles, x)
 
 # %%
 title = 'SMQ020 - Smoked at least 100 cigarettes in life'
-col = 'SMQ020'
-groups = [1,2]
-group_names = {1:"Yes", 2:"No"}
-line_styles = {1:"-", 2:"-."}
+for year in [2007,2017]:
+    conditions = [
+        (df[year]['SMQ020' ]== 2.0),
+        (df[year]['SMQ020'] == 1.0) & (df[year]['SMQ040'] <= 2.0),
+        (df[year]['SMQ020'] == 1.0) & (df[year]['SMQ040'] > 2.0) ]
+    choices = [1,2,3]
+    df[year]['smoking'] = np.select(conditions, choices, default=0.0)
+title = 'Smoking Status'
+col = 'smoking'
+groups = [1,2,3]
+group_names = {1:"Never", 2:"Current", 3:"Past"}
+line_styles = {1:"-.", 2:"-", 3:":"}
 # x = np.linspace(0.0,0.08,100)
 
 analyze(title, col, groups, group_names, line_styles, x)
