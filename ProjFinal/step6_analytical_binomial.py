@@ -1,5 +1,7 @@
 """
 Compute posterior using analytical method instead of PyMC3.
+Conclusion:
+    We used this file to compute values and plot figures which are used in the report.
 """
 #%%
 import glob

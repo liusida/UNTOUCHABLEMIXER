@@ -1,15 +1,19 @@
 """
 We want to know:
-1. Given the data in 2007, what's the model for PHQ score?
-    1.1 make assumption for PHQ score. 
+Given the data in 2007, what's the model for PHQ score? What about the data in 2017
+    1 make assumption for PHQ score. 
         According to the histogram, we assume PHQ score follows 
         a negative binomial distribution based on the shape (not the logic).
-    1.2 use MCMC to generate trace and get the model parameters distribution.
+    2 use MCMC to generate trace and get the model parameters distribution.
         we see all of them are follow normal-like distribution.
         we pick the mean of the parameter distribution, so we have the expected parameters.
-    1.3 Use the expected parameter to generate random data, and compare that with original data.
+    3 Use the expected parameter to generate random data, and compare that with original data.
 
-
+Conclusion:
+    We used Negative Binomial to model the distribution of PHQ score.
+    However, even we can fit the model, there's not much we can interpret from the result.
+    We move on to step5, using Binomial to model the boolean variable "Major depression".
+    
 """
 # %%
 """
@@ -170,6 +174,9 @@ def mcmcNegativeBinomial(data):
         graph = pm.model_to_graphviz(model)
     graph.render(filename='model', format='png')
     return trace
+def mcmcBinomial(data):
+
+    pass
 # %%
 def visualize_trace(trace, data, desc='2007'):
     """Interpret the trace"""

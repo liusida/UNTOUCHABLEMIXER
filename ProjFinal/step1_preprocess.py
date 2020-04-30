@@ -9,6 +9,9 @@ The final usable variable will be saved in a pickel file.
 More about the XPT files:
 the suffix "_J" stands for 2017-2018, the suffix "_E" stands fro 2007-2008
 
+Conclusion:
+    We used this file to do data preprocessing.
+
 """
 import glob, os
 import pandas as pd

@@ -1,4 +1,9 @@
-
+"""
+Conclusion:
+     Binomial is good to model whether depression or not.
+     Using MCMC to get results are slow,
+     so we move to step6, using analytical solution instead.
+"""
 import glob
 import os
 import pandas as pd

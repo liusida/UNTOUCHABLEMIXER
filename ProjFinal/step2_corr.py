@@ -1,3 +1,7 @@
+"""
+Conclusion:
+    We used this file to pick several interesting variables from calcluating the correlation.
+"""
 #%%
 import glob
 import os

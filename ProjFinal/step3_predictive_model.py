@@ -2,6 +2,11 @@
 """
 In this file, we are going to pick six groups of variables and build predictive models out of them
 For y labels, we are going to use the boolean "Major depression" column
+
+Conclusion:
+    our predictive model didn't work out in this case.
+    even combine all columns we picked, the model still tends to say no one is having depression.
+    We move on to step4, using Bayesian inference to see the relationship between those variables and depression.
 """
 import glob
 import os
